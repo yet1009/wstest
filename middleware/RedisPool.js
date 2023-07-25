@@ -9,6 +9,9 @@ module.exports = (app) => {
         port: 26379
     })
 
+    clientMaster.on('connect', () => {
+        console.log('Redis Connect');
+    })
 
     clientMaster.on('error', (err) => {
         console.error('Redis Master error : ', err)
