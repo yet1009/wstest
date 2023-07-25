@@ -22,7 +22,7 @@ io.on('connection', async (socket) => {
 
     await socket.on('send_name', (msg) => {
         console.log(msg)
-        io.emit('이름 출력 해줄게 ~~~~~', msg);
+        io.emit('send_name', msg['name']);
     })
 })
 
