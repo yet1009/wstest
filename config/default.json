@@ -1,0 +1,7 @@
+{
+  "SessionRedis" : {
+    "protocol": "redis",
+    "host": "13.124.239.21",
+    "port": "26379"
+  }
+}
