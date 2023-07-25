@@ -20,7 +20,7 @@ io.on('connection', async (socket) => {
     console.log('socket connection, ',socket.id)
     console.log(',,,,,,,,,,,,,,')
 
-    socket.on('send_name', (msg) => {
+    await socket.on('send_name', (msg) => {
         io.emit('이름 출력 해줄게 ~~~~~', msg);
     })
 })
