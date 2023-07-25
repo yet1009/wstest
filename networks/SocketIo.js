@@ -12,8 +12,11 @@ const io = new Server(server);
 
 io.listen(4005);
 
+
+
 io.on('connection', async (socket) => {
     console.log('socket connection, ',socket.id)
+    console.log(',,,,,,,,,,,,,,')
 })
 
 
