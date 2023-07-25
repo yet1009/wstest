@@ -21,6 +21,7 @@ io.on('connection', async (socket) => {
     console.log(',,,,,,,,,,,,,,')
 
     await socket.on('send_name', (msg) => {
+        console.log(msg)
         io.emit('이름 출력 해줄게 ~~~~~', msg);
     })
 })
