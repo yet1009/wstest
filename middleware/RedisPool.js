@@ -4,6 +4,8 @@ const _ = require('lodash');
 
 module.exports = (app) => {
 
+    console.dir(app);
+
     const clientMaster = redis.createClient({
         host: 'localhost',
         port: 26379
