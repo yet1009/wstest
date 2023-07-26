@@ -1,7 +1,8 @@
 const express = require('express');
 
-
 const redisPool = require('../middleware/RedisPool');
+
+const { socketEmitter } = require('../utils/GroupEmitter')
 
 const app = express();
 const http = require('http');
@@ -21,12 +22,13 @@ io.on('connection', async (socket) => {
     console.log('socket connection, ',socket.id)
     console.log(',,,,,,,,,,,,,,')
 
+    console.log(socketEmitter)
+
     await socket.on('send_name', (msg) => {
         console.log(msg)
         let data = JSON.parse(msg)
         io.emit('send_name', data['name']);
     })
-
 
 })
 
