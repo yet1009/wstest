@@ -1,22 +1,19 @@
 const config = require('../utils/JasyptConfig');
-const redis = require('redis');
+const { createClient } = require('redis');
+const { createAdapter } = require('@socket.io/redis-adapter');
 const _ = require('lodash');
 
-module.exports = (app) => {
 
-    console.dir(app);
+module.exports = (io) => {
 
-    const clientMaster = redis.createClient({
-        host: 'localhost',
-        port: 26379
-    })
+    console.dir(io);
 
-    clientMaster.on('connect', () => {
-        console.log('Redis Connect');
-    })
+    const pubClient = createClient({ host: 'localhost', port: 26379 });
+    const subClient = pubClient.duplicate();
 
-    clientMaster.on('error', (err) => {
-        console.error('Redis Master error : ', err)
+    Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
+        io.adapter(createAdapter(pubClient, subClient))
+        io.listen(4005)
     })
 
 }

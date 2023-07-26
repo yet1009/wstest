@@ -13,7 +13,7 @@ const server = http.createServer(app);
 const { Server } = require('socket.io');
 const io = new Server(server);
 
-redisPool(app);
+redisPool(io);
 
 io.listen(4005);
 
@@ -26,6 +26,8 @@ io.on('connection', async (socket) => {
         let data = JSON.parse(msg)
         io.emit('send_name', data['name']);
     })
+
+
 })
 
 
