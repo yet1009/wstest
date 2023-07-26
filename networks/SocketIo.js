@@ -44,9 +44,9 @@ io.on('connection', async (socket) => {
     })
 
 
-    socket.on('get_name', () => {
-        let ds = redisClient.get('test');
-        socket.emit('get_name', JSON.parse(ds))
+    await socket.on('get_name', () => {
+        let ds = redisClient.get('asf');
+        socket.emit('stored_name', JSON.parse(ds))
     })
 
 
