@@ -37,19 +37,17 @@ io.on('connection', async (socket) => {
         // console.dir(redisClient);
 
         redisClient.set('test', msg);
-        redisClient.quit();
+        //redisClient.quit();
         socket.emit('send_name', data['name']);
     })
 
 
-    await socket.on('get_name', () => {
+    socket.on('get_name', () => {
+
         const redisClient = new Redis(_url)
-        // console.dir(redisClient);
         let ds = redisClient.get('test');
-        // console.log(JSON.parse(ds))
 
-        socket.emit('get_name', ds)
-
+        socket.emit('get_name', JSON.parse(ds))
     })
 
 
