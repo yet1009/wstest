@@ -23,7 +23,11 @@ const subClient = pubClient.duplicate();
 
 io.adapter(createAdapter(pubClient, subClient));
 
-server.listen(4005);
+const port = 4005;
+server.listen(port, () => {
+    console.log(`Server is listening on ${port}`)
+});
+
 
 io.on('connection', async (socket) => {
     console.log('socket connection, ',socket.id)
@@ -31,14 +35,17 @@ io.on('connection', async (socket) => {
 
     await socket.on('send_name', (msg) => {
         console.log(msg)
-        let data = JSON.parse(msg)
-
         const redisClient = new Redis(_url)
         console.dir(redisClient);
         // socket.broadcast.emit('send_name', data['name']);
 
-        redisClient.set('test', data);
+        redisClient.set('test', msg);
 
+    })
+
+
+    socket.on('disconnect', () => {
+        console.log('connect 끊어짐....')
     })
 
 })
