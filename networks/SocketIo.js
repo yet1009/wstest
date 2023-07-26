@@ -3,8 +3,6 @@ const express = require('express');
 const { createClient } = require('redis');
 const Redis = require('ioredis')
 
-
-
 const { createAdapter } = require('@socket.io/redis-adapter')
 
 const app = express();
@@ -12,7 +10,6 @@ const http = require('http');
 
 const server = http.createServer(app);
 // const config = require('config');
-
 
 const { Server } = require('socket.io');
 const io = new Server(server);
@@ -35,12 +32,13 @@ io.on('connection', async (socket) => {
 
     await socket.on('send_name', (msg) => {
         console.log(msg)
+        let data = JSON.parse(msg);
         const redisClient = new Redis(_url)
-        console.dir(redisClient);
-        // socket.broadcast.emit('send_name', data['name']);
+        // console.dir(redisClient);
 
         redisClient.set('test', msg);
-
+        redisClient.quit();
+        socket.emit('send_name', data['name']);
     })
 
 
