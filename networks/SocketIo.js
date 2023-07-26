@@ -42,6 +42,15 @@ io.on('connection', async (socket) => {
     })
 
 
+    await socket.on('get_name', () => {
+        const redisClient = new Redis(_url)
+        // console.dir(redisClient);
+        let ds = redisClient.get('test');
+        console.log(ds)
+
+    })
+
+
     socket.on('disconnect', () => {
         console.log('connect 끊어짐....')
     })
