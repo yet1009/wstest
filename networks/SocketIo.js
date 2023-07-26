@@ -1,8 +1,9 @@
 const express = require('express');
 
-const redisPool = require('../middleware/RedisPool');
-
+// const redisPool = require('../middleware/RedisPool');
 const { socketEmitter } = require('../utils/GroupEmitter')
+
+const redis = require('socket.io-redis')
 
 const app = express();
 const http = require('http');
@@ -14,20 +15,20 @@ const server = http.createServer(app);
 const { Server } = require('socket.io');
 const io = new Server(server);
 
-redisPool(io);
+// redisPool(io);
 
 io.listen(4005);
+
+io.adapter(redis({ host: 'localhost', port: 26379}))
 
 io.on('connection', async (socket) => {
     console.log('socket connection, ',socket.id)
     console.log(',,,,,,,,,,,,,,')
 
-    console.log(socketEmitter)
-
     await socket.on('send_name', (msg) => {
         console.log(msg)
         let data = JSON.parse(msg)
-        io.emit('send_name', data['name']);
+        socket.emit('send_name', data['name']);
     })
 
 })
