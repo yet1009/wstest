@@ -25,6 +25,8 @@ server.listen(port, () => {
     console.log(`Server is listening on ${port}`)
 });
 
+const redisClient = new Redis(_url)
+
 
 io.on('connection', async (socket) => {
     console.log('socket connection, ',socket.id)
@@ -33,7 +35,7 @@ io.on('connection', async (socket) => {
     await socket.on('send_name', (msg) => {
         console.log(msg)
         let data = JSON.parse(msg);
-        const redisClient = new Redis(_url)
+
         // console.dir(redisClient);
 
         redisClient.set('test', msg);
@@ -43,10 +45,7 @@ io.on('connection', async (socket) => {
 
 
     socket.on('get_name', () => {
-
-        const redisClient = new Redis(_url)
         let ds = redisClient.get('test');
-
         socket.emit('get_name', JSON.parse(ds))
     })
 
