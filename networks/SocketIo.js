@@ -17,11 +17,28 @@ const { Server } = require('socket.io');
 const io = new Server(server);
 
 // redisPool(io);
-const pubClient = createClient({ url: 'redis://localhost:26379'});
+const pubClient = createClient({
+    host: 'localhost',
+    port: 26379,
+    db: 3,
+    legacyMode: true
+});
 const subClient = pubClient.duplicate();
 
+const __redisConnect = () => {
+    pubClient.connect().catch(err => {
+        console.error('Redis Error : ', err)
+        setTimeout(() => {
+            __redisConnect()
+        }, 5000)
+    })
+}
+
+__redisConnect()
 io.adapter(createAdapter(pubClient, subClient));
+
 io.listen(4005);
+
 io.on('connection', async (socket) => {
     console.log('socket connection, ',socket.id)
     console.log(',,,,,,,,,,,,,,')
