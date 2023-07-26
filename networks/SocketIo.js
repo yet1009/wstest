@@ -46,7 +46,7 @@ io.on('connection', async (socket) => {
         const redisClient = new Redis(_url)
         // console.dir(redisClient);
         let ds = redisClient.get('test');
-        console.log(ds)
+        console.log(JSON.parse(ds))
 
     })
 
