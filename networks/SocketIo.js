@@ -1,9 +1,10 @@
 const express = require('express');
 
-// const redisPool = require('../middleware/RedisPool');
-const { socketEmitter } = require('../utils/GroupEmitter')
-
 const { createClient } = require('redis');
+const Redis = require('ioredis')
+
+
+
 const { createAdapter } = require('@socket.io/redis-adapter')
 
 const app = express();
@@ -16,24 +17,12 @@ const server = http.createServer(app);
 const { Server } = require('socket.io');
 const io = new Server(server);
 
-// redisPool(io);
-const pubClient = createClient({url: 'redis://localhost:26379'});
+const _url = 'redis://127.0.0.1:26379'
+const pubClient = createClient({url: _url});
 const subClient = pubClient.duplicate();
 
-
-//
-// const __redisConnect = () => {
-//     pubClient.connect().catch(err => {
-//         console.error('Redis Error : ', err)
-//         setTimeout(() => {
-//             __redisConnect()
-//         }, 5000)
-//     })
-// }
-//
-// __redisConnect()
-
 io.adapter(createAdapter(pubClient, subClient));
+
 server.listen(4005);
 
 io.on('connection', async (socket) => {
@@ -43,7 +32,10 @@ io.on('connection', async (socket) => {
     await socket.on('send_name', (msg) => {
         console.log(msg)
         let data = JSON.parse(msg)
-        socket.broadcast.emit('send_name', data['name']);
+
+        const redisClient = new Redis(_url)
+        console.dir(redisClient);
+        // socket.broadcast.emit('send_name', data['name']);
     })
 
 })
