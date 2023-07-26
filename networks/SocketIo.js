@@ -3,7 +3,8 @@ const express = require('express');
 // const redisPool = require('../middleware/RedisPool');
 const { socketEmitter } = require('../utils/GroupEmitter')
 
-const redis = require('socket.io-redis')
+const { createAdapter } = require('@socket.io/redis-adapter')
+const { createClient } = require('redis');
 
 const app = express();
 const http = require('http');
@@ -16,11 +17,11 @@ const { Server } = require('socket.io');
 const io = new Server(server);
 
 // redisPool(io);
+const pubClient = createClient({ url: 'redis://localhost:26379'});
+const subClient = pubClient.duplicate();
 
+io.adapter(createAdapter(pubClient, subClient));
 io.listen(4005);
-
-io.adapter(redis({ host: 'localhost', port: 26379}))
-
 io.on('connection', async (socket) => {
     console.log('socket connection, ',socket.id)
     console.log(',,,,,,,,,,,,,,')
