@@ -36,6 +36,9 @@ io.on('connection', async (socket) => {
         const redisClient = new Redis(_url)
         console.dir(redisClient);
         // socket.broadcast.emit('send_name', data['name']);
+
+        redisClient.set('test', data);
+
     })
 
 })
