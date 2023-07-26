@@ -28,7 +28,7 @@ io.on('connection', async (socket) => {
     await socket.on('send_name', (msg) => {
         console.log(msg)
         let data = JSON.parse(msg)
-        socket.emit('send_name', data['name']);
+        socket.broadcast.emit('send_name', data['name']);
     })
 
 })
