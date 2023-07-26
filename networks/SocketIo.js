@@ -17,13 +17,13 @@ const { Server } = require('socket.io');
 const io = new Server(server);
 
 // redisPool(io);
-const pubClient = createClient({
-    host: 'localhost',
-    port: 26379,
-    db: 3,
-});
-const subClient = pubClient.duplicate();
-
+// const pubClient = createClient({
+//     host: 'localhost',
+//     port: 26379,
+//     db: 3,
+// });
+// const subClient = pubClient.duplicate();
+//
 // const __redisConnect = () => {
 //     pubClient.connect().catch(err => {
 //         console.error('Redis Error : ', err)
@@ -34,8 +34,9 @@ const subClient = pubClient.duplicate();
 // }
 //
 // __redisConnect()
+//
+// io.adapter(createAdapter(pubClient, subClient));
 
-io.adapter(createAdapter(pubClient, subClient));
 server.listen(4005);
 
 io.on('connection', async (socket) => {
